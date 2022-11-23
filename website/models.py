@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class session(models.Model):
+    id = models.CharField(max_length=8, primary_key=True)
