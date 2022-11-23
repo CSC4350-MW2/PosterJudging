@@ -31,6 +31,7 @@ body {
     font-family: sans-serif;
     text-transform: uppercase;
     cursor: default;
+    color: rgb(9,9,121);
 }
 
 main {
@@ -39,6 +40,8 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: rgb(2,0,36);
+    background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 100%, rgba(0,212,255,1) 100%);  
 }
 
 .session-div {
@@ -49,7 +52,7 @@ main {
     width: 300px;
     height: 160px;
     border-radius: 25px;
-    background-color: rgba(0.0, 0.0, 0.0, 0.a);
+    background-color: rgba(0.0, 0.0, 0.0, 0.4);
 }
 
 .session-div > * {
