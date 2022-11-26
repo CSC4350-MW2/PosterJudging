@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import session, judge
 
+
 def index(request):
     if request.method == 'GET':
         return render(request, 'website/home.html')
@@ -17,9 +18,16 @@ def index(request):
         request.session['session_id'] = post.id
         return redirect(post.id+'/judge-login')
 
+
 def admin_index(request):
     if request.method == 'GET':
         return render(request, 'website/administrator.html')
+
+
+def admin_page(request):
+    if request.method == 'GET':
+        return render(request, 'website/index.html')
+
 
 def judge_login(request, session_id):
     if request.method == 'GET':
