@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 from .models import session, judge
 
 
@@ -7,16 +8,22 @@ def index(request):
     if request.method == 'GET':
         return render(request, 'website/home.html')
     elif request.method == 'POST':
-        post = session()
-        post.id = request.POST['id']
-        post.save()
+        # post = session()
+        # post.id = request.POST['id']
+        # post.save()
 
         context = {
-            "session_id": post.id
+            "session_id":request.POST['id'] 
         }
 
-        request.session['session_id'] = post.id
-        return redirect(post.id+'/judge-login')
+        id = request.POST['id']
+        request.session['session_id'] = request.POST['id'] 
+        if session.objects.filter(id=id).exists():
+            return redirect(id+'/judge-login')
+        else:
+            messages.error(request, "This session does not exist")
+        return render(request, 'website/home.html')
+
 
 
 def admin_index(request):
