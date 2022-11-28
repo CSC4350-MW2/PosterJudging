@@ -20,10 +20,6 @@ class judge(models.Model):
     ]
     level = models.CharField(max_length=4, choices=level_choices)
 
-class administrator(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    panther_id = models.CharField(max_length=9)
 
 class submission(models.Model):
     subject_choices = [
