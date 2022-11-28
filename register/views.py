@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
+from .models import administrator
 
 # Create your views here.
 
@@ -7,8 +8,11 @@ from .forms import RegisterForm
 def register(response):
     if response.method == "POST":
         form = RegisterForm(response.POST)
-        if form.is_valid():
-            form.save()
+        post = administrator()
+        post.username = response.POST['username']
+        post.email = response.POST['email']
+        post.password = response.POST['password1']
+        post.save()
 
         return redirect("login")
     else:
