@@ -1,30 +1,35 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'judge_login.css' %}" />
     <title>Judge Sign In</title>
 </head>
 <body>
+    <header class="header">
+      <h1>Judging App</h1>
+    </header>
     <main>
         <form action="" method="POST" class="info-cont">
             {% csrf_token %}
             <div class="input-cont">
                 <label for="first_name">First Name</label>
-                <input type="text" name="first_name">
+                <input type="text" name="first_name" required>
             </div>
             <div class="input-cont">
                 <label for="last_name">Last Name</label>
-                <input type="text" name="last_name">
+                <input type="text" name="last_name"required>
             </div>
             <div class="input-cont">
                 <label for="panther_id">Panther Id</label>
-                <input type="text" name="panther_id">
+                <input type="text" name="panther_id"required>
             </div>
             <div class="input-cont">
                 <label for="subject_choices">Subject</label>
-                <select name="subject_choices" id="subject_choices">
+                <select name="subject_choices" id="subject_choices" required>
                     <option hidden disabled selected value></option>
                     <option value="CSC">Computer Science</option>
                     <option value="PHY">Physics</option>
@@ -32,9 +37,9 @@
                     <option value="CHEM">Chemistry</option>
                 </select>
             </div>
-            <div class="input-cont">
+            <div class="input-cont"> 
                 <label for="level_choices">Education Level</label>
-                <select name="level_choices" id="level_choices">
+                <select name="level_choices" id="level_choices" required>
                     <option hidden disabled selected value></option>
                     <option value="Grad">Graduate Student</option>
                     <option value="Prof">Professor</option>

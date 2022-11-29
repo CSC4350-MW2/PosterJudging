@@ -1,0 +1,48 @@
+root {
+    --header_height: 60px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+body {
+    background-color: white;
+    font-family: verdana;
+    height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: lavender;
+    color: darkblue;
+    font-size: 20px;
+    border-bottom: 2px solid lightgrey;
+    height: var(--header_height);
+}
+
+.header > h1 {
+    display: flex;
+    align-items: center;
+    margin-left: 50px;
+    font-size: 2rem;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    cursor: default;
+    color: rgb(9,9,121);
+}
+
+main {
+    width: 100vw;
+    height: calc(100vh - var(--header_height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: beige;
+}
+.info-cont {
+
+}
