@@ -33,3 +33,16 @@ body {
     cursor: default;
     color: rgb(9,9,121);
 }
+
+main {
+    width: 100vw;
+    height: calc(100vh - var(--header_height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: beige;
+}
+.info-cont {
+
+}

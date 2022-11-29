@@ -17,6 +17,7 @@ def index(request):
         }
 
         id = request.POST['id']
+        judge = request.POST['panther_id']
         request.session['session_id'] = request.POST['id'] 
         if session.objects.filter(id=id).exists():
             return redirect(id+'/judge-login')
