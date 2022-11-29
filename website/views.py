@@ -13,14 +13,17 @@ def index(request):
         # post.save()
 
         context = {
-            "session_id":request.POST['id'] 
+            "session_id":request.POST['session_id'] 
         }
 
-        id = request.POST['id']
+        id = request.POST['session_id']
         judge = request.POST['panther_id']
-        request.session['session_id'] = request.POST['id'] 
+        request.session['session_id'] = request.POST['session_id'] 
         if session.objects.filter(id=id).exists():
-            return redirect(id+'/judge-login')
+            if session.objects.filter(judges=judge):
+                return redirect(id+'/judge-login')
+            else:
+                messages.error(request, "Panther ID isn't authorized for this session")
         else:
             messages.error(request, "This session does not exist")
         return render(request, 'website/home.html')
@@ -39,7 +42,6 @@ def admin_page(request):
 
 def judge_login(request, session_id):
     if request.method == 'GET':
-        Session = session.objects.get(id=session_id)
         return render(request, 'website/judge_login.html')
     elif request.method == 'POST':
         post = judge()
@@ -49,4 +51,6 @@ def judge_login(request, session_id):
         post.subject = request.POST['subject_choices']
         post.level = request.POST['level_choices']
         post.save()
+        Session = session.objects.get(id=session_id)
+        Session.judges.add(post)
         return HttpResponse("Logged In :)")
