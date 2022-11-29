@@ -51,28 +51,12 @@ def judge_login(request, session_id):
 # add new judger to table
 global_judger = judge.objects.all()
 
+# main page for judger
+
 
 def judgers(request):
     global global_judger
     if request.method == 'GET':
-        return render(request, 'website/judgers.html', {"data": global_judger})
-    if request.method == 'POST':
-
-        item_judger = judge()
-        item_judger.first_name = request.POST['first_name']
-        item_judger.last_name = request.POST.get('last_name', '')
-        item_judger.panther_id = request.POST['panther_id']
-        item_judger.subject = request.POST['subject_choices']
-        item_judger.level = request.POST['level_choices']
-        print(item_judger)
-        list_panther_id = [x.panther_id for x in global_judger]
-        if item_judger.panther_id in list_panther_id:
-            print("already exist")
-            return render(request, 'website/judgers.html', {"data": global_judger})
-        else:  # add new item
-            item_judger.save()
-            global_judger = judge.objects.all()
-
         return render(request, 'website/judgers.html', {"data": global_judger})
 
 
@@ -92,13 +76,13 @@ def add_judger(request):
         item_judger.panther_id = request.POST['panther_id']
         item_judger.subject = request.POST['subject_choices']
         item_judger.level = request.POST['level_choices']
-        print(item_judger)
         list_panther_id = [x.panther_id for x in global_judger]
         if item_judger.panther_id in list_panther_id:
-            print("already exist")
+            messages.error(request, "Panther ID already exists")
             return render(request, 'website/judgers.html', {"data": global_judger})
         else:  # add new item
             item_judger.save()
+            messages.success(request, "New voter created")
             global_judger = judge.objects.all()
 
         return render(request, 'website/judgers.html', {"data": global_judger})
@@ -112,17 +96,30 @@ def delete_judger(request):
     global global_judger
 
     if request.method == 'GET':
-        return render(request, 'website/judgers.html', {"data": global_judger})
+        return render(request, 'website/edit_judger.html', {"data": global_judger})
     if request.method == 'POST':
-
         id = request.POST['panther_id']
-        print(id)
         judge.objects.filter(panther_id=id).delete()
         global_judger = judge.objects.all()
 
         return render(request, 'website/judgers.html', {"data": global_judger})
 
 # edit judger information
+
+
+@csrf_protect
+def edit_judger(request):
+    global global_judger
+    if request.method == 'GET':
+        return render(request, 'website/edit_judger.html', {"data": global_judger})
+    if request.method == 'POST':
+        id = request.POST['panther_id']
+        judge.objects.filter(panther_id=id).update(first_name=request.POST['first_name'],
+                                                   last_name=request.POST['last_name'],
+                                                   subject=request.POST['subject_choices'],
+                                                   level=request.POST['level_choices'])
+        global_judger = judge.objects.all()
+        return render(request, 'website/judgers.html', {"data": global_judger})
 
 
 def judges(request):
