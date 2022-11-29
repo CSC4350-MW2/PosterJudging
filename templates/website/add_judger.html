@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'administrator.css' %}" />
+    <title>Add New Judger</title>
+  </head>
+  <body>
+    <div class="content">
+      <!-- Add New -->
+      <div>
+        <div>
+          <h1>Add New Judger</h1>
+        </div>
+
+        <div>
+          <form action="" method="post" class="info-cont">
+            {% csrf_token %}
+            <div class="input-cont">
+              <label for="first_name">First Name</label>
+              <input type="text" name="first_name" required />
+            </div>
+            <div class="input-cont">
+              <label for="last_name">Last Name</label>
+              <input type="text" name="last_name" required />
+            </div>
+            <div class="input-cont">
+              <label for="panther_id">Panther Id</label>
+              <input type="number" name="panther_id" required />
+            </div>
+            <div class="input-cont">
+              <label for="subject_choices">Subject</label>
+              <select name="subject_choices" id="subject_choices" required>
+                <option hidden disabled selected value></option>
+                <option value="CSC">Computer Science</option>
+                <option value="PHY">Physics</option>
+                <option value="BIO">Biology</option>
+                <option value="CHEM">Chemistry</option>
+              </select>
+            </div>
+            <div class="input-cont">
+              <label for="level_choices">Education Level</label>
+              <select name="level_choices" id="level_choices" required>
+                <option hidden disabled selected value></option>
+                <option value="Grad">Graduate Student</option>
+                <option value="Prof">Professor</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Add</button>
+                <button type="reset" class="btn btn-default">Reset</button>
+                <button
+                  onclick="window.location.href = 'judgers';"
+                  class="btn btn-default"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

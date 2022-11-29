@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'administrator.css' %}" />
+    <title>Judgers</title>
+    <style></style>
+  </head>
+  <body>
+    <!-- The sidebar -->
+    <div class="sidebar">
+      <a href="administrator">Home</a>
+      <a href="judges">Judges</a>
+      <a href="judgers">Judgers</a>
+      <a href="positions">Positions</a>
+      <a href="candidates">Candidates</a>
+      <a href="results">Result</a>
+      <a href="logout">Logout</a>
+    </div>
+
+    <div class="content">
+      <div>
+        <button
+          onclick="window.location.href = 'add_judger';"
+          class="btn btn-default"
+        >
+          Add New
+        </button>
+      </div>
+      <!--Table-->
+      <table id="table1" class="table table-bordered">
+        <thead>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Panther Id</th>
+          <th>Subject</th>
+          <th>Education Level</th>
+          <th>Action</th>
+        </thead>
+        <!--Judger information-->
+        <tbody>
+          {% for judger in data %}
+          <tr>
+            <td>{{ judger.first_name }}</td>
+            <td>{{ judger.last_name }}</td>
+            <td>{{ judger.panther_id }}</td>
+            <td>{{ judger.subject }}</td>
+            <td>{{ judger.level}}</td>
+
+            <td>
+              <!--Edit button-->
+              <div>
+                <button
+                  onclick="window.location.href = 'edit_judger';"
+                  class="btn btn-default"
+                >
+                  Edit
+                </button>
+              </div>
+
+              <!--Delete Judger-->
+              <form action="delete_judger" method="post">
+                {% csrf_token %}
+                <input
+                  type="hidden"
+                  name="panther_id"
+                  value="{{ judger.panther_id }}"
+                />
+                <input type="submit" id="delete" value="Delete" />
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

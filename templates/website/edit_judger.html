@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'administrator.css' %}" />
+    <title>Edit Judger</title>
+  </head>
+  <body>
+    <div class="content">
+      <!-- Edit New -->
+      <div>
+        <div>
+          <h1>Edit Judger</h1>
+        </div>
+        <div>
+        <!--Edit Form-->
+        <!-- view eidt information before update-->
+
+        <form action="edit_judger" method="post">
+          {% csrf_token %}
+          <div>
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" value="{{judger.first_name}}" required />
+          </div>  
+            <label for="last_name">Last Name</label>
+            <input type="text" name="last_name" value="{{judger.last_name}}" required/>
+            <div>
+            <label for="panther_id">Panther_id</label>
+            <input type="number" name="panther_id" value="{{judger.panther_id}}" required/>
+          </div> 
+            <label for="subject">Subject</label>
+            <select type="text" name="subject_choices" id="subject_choices" value="{{judger.subject}}" required />
+            <option hidden disabled selected value></option>
+            <option value="CSC">Computer Science</option>
+            <option value="PHY">Physics</option>
+            <option value="BIO">Biology</option>
+            <option value="CHEM">Chemistry</option>
+        </select>
+
+          </div>
+          <div>
+            <label for="level_choices">Education Level</label>
+              <select name="level_choices" id="level_choices" value ="{{judger.level}}" required>
+                  <option hidden disabled selected value></option>
+                  <option value="Grad">Graduate Student</option>
+                  <option value="Prof">Professor</option>
+              </select>
+          <div>
+            <button type="submit">Update</button>
+            <button
+                onclick="window.location.href = 'judgers';"
+                class="btn btn-default"
+              >
+                Cancel
+              </button>
+          </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
