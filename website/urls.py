@@ -10,14 +10,14 @@ urlpatterns = [
 
     path('judgers', views.judgers, name='judgers'),
     path('add_judger', views.add_judger, name='add_judger'),
-    #path('edit_judger', views.edit_judger, name='edit_judger'),
+    path('edit_judger', views.edit_judger, name='edit_judger'),
     path('delete_judger', views.delete_judger, name='delete_judger'),
 
 
 
 
     path('judges', views.judges, name='judges'),
-    path('positions', views.positions, name='positions'),
+
     path('candidates', views.candidates, name='candidates'),
     path('results', views.results, name='results'),
 
