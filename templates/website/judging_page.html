@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'judging_page.css' %}" />
+    <title>Judging App</title>
+  </head>
+  <body>
+    <header class="header">
+      <h1>Judging App</h1>
+    </header>
+    <main>
+        <div class="session-div">
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for submission in submissions %}
+                    <div class="slide-cont">
+                        <label for="">{{submission.id}}. {{submission.title}}</label>
+                        <input type="range" name="score" id="score_{{submission.id}}" min="1" max="5" value="3" class="slider" oninput="rangeValue.innerText = this.value">
+                        <p id="rangeValue">3</p>
+                    </div>
+                {% endfor %}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </main>
+  </body>
+</html>

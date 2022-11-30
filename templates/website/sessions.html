@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'administrator.css' %}" />
-    <title>Admin Homepage</title>
+    <title>Admin</title>
     <style></style>
   </head>
   <body>
@@ -21,20 +21,11 @@
       <a href="sessions">Sessions</a>
       <a href="logout">Logout</a>
     </div>
-
     <div class="content">
-      <div>
-        <h1>Result</h1>
-      </div>
-      <table id="table1" class="table table-bordered">
-        <thead>
-          <th>Candidate Name</th>
-          <th>Candidate Position</th>
-          <th>Total Vote</th>
-        </thead>
-
-        <tbody></tbody>
-      </table>
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit">Start Session</button>
+        </form>
     </div>
   </body>
 </html>

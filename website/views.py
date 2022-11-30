@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
-from .models import session, judge
+from .models import session, judge, submission
 from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_protect
-
+from django.contrib.auth.decorators import login_required
+from django.utils.crypto import get_random_string
 
 def index(request):
     if request.method == 'GET':
@@ -19,24 +20,39 @@ def index(request):
         }
 
         id = request.POST['session_id']
-        judge = request.POST['panther_id']
+        judge_id = request.POST['panther_id']
         request.session['session_id'] = request.POST['session_id'] 
         if session.objects.filter(id=id).exists():
-            if session.objects.filter(judges=judge):
-                return redirect(id+'/'+judge)
+            if judge.objects.filter(panther_id=judge_id).exists():
+                response = redirect('judging_page')
+                response.set_cookie('panther_id', judge_id)
+                response.set_cookie('session_id', id)
+                return response
             else:
                 messages.error(request, "Panther ID isn't authorized for this session")
         else:
             messages.error(request, "This session does not exist")
         return render(request, 'website/home.html')
 
+def judging_page(request):
+    if not (judge.objects.filter(panther_id=request.COOKIES['panther_id']).exists() and session.objects.filter(id=request.COOKIES['session_id']).exists()):
+        return redirect('/')
+    else:
+        if request.method == 'GET':
+            judger = judge.objects.get(panther_id=request.COOKIES['panther_id'])
+            submissions = judger.submissions.all()
+            context = {'submissions': submissions}
+            return render(request, 'website/judging_page.html', context)
+        elif request.method == 'POST':
+            
 
-
+@login_required(login_url="/login")
 def admin_index(request):
     if request.method == 'GET':
         return render(request, 'website/administrator.html')
 
 
+@login_required(login_url="/login")
 def admin_page(request):
     if request.method == 'GET':
         return render(request, 'website/index.html')
@@ -57,7 +73,8 @@ def judge_login(request, session_id):
         Session.judges.add(post)
         return HttpResponse("Logged In :)")
 
-
+def judge_logout(request):
+    logout(request)
 # This is for admintrator part
 # add new judger to table
 global_judger = judge.objects.all()
@@ -102,6 +119,7 @@ def add_judger(request):
 # delete judger
 
 
+@login_required(login_url="/login")
 @csrf_protect
 def delete_judger(request):
     global global_judger
@@ -118,6 +136,7 @@ def delete_judger(request):
 # edit judger information
 
 
+@login_required(login_url="/login")
 @csrf_protect
 def edit_judger(request):
     global global_judger
@@ -133,21 +152,50 @@ def edit_judger(request):
         return render(request, 'website/judgers.html', {"data": global_judger})
 
 
+@login_required(login_url="/login")
 def judges(request):
     if request.method == 'GET':
         return render(request, 'website/judges.html')
 
 
+@login_required(login_url="/login")
 def positions(request):
     if request.method == 'GET':
         return render(request, 'website/positions.html')
 
 
+@login_required(login_url="/login")
 def candidates(request):
     if request.method == 'GET':
         return render(request, 'website/candidates.html')
 
 
+@login_required(login_url="/login")
 def results(request):
     if request.method == 'GET':
         return render(request, 'website/results.html')
+
+@login_required(login_url="/login")
+def sessions(request):
+    if request.method == 'GET':
+        return render(request, 'website/sessions.html')
+    elif request.method == 'POST':
+        judge_list = judge.objects.all()
+        submission_list = submission.objects.all()
+        submission_to_judges = int(max((len(submission_list)/len(judge_list)) + 1, 3))
+        i = 0
+        for judger in judge_list:
+            for x in range(submission_to_judges):
+                judger.submissions.add(submission_list[i+x])
+            i += submission_to_judges-1
+        post = session()
+        post.id = get_random_string(8)
+        session_id = post.id
+        post.save()
+        return redirect('new_session/' + session_id)
+
+@login_required(login_url="/login")
+def new_session(request, session_id):
+    if request.method == 'GET':
+        context = {'session_id': session_id}
+        return render(request, 'website/new_session.html', context)
