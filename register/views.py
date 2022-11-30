@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm
+from .forms import RegisterForm, LoginForm
 from .models import administrator
 
 # Create your views here.
@@ -18,3 +18,10 @@ def register(response):
     else:
         form = RegisterForm()
     return render(response, "register/register.html", {"form": form})
+
+def login(response):
+    if response.method == "POST":
+        return redirect("administrator/")
+    else:
+        form = LoginForm()
+        return render(response, "registration/login.html", {"form": form})

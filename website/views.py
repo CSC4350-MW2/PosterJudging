@@ -23,7 +23,7 @@ def index(request):
         request.session['session_id'] = request.POST['session_id'] 
         if session.objects.filter(id=id).exists():
             if session.objects.filter(judges=judge):
-                return redirect(id+'/judge-login')
+                return redirect(id+'/'+judge)
             else:
                 messages.error(request, "Panther ID isn't authorized for this session")
         else:
