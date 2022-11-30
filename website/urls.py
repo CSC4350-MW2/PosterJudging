@@ -21,6 +21,7 @@ urlpatterns = [
     path('results', views.results, name='results'),
     path('sessions', views.sessions, name='sessions'),
     path('new_session/<str:session_id>', views.new_session, name='new session'),
+    path('finish', views.finish, name='finish voting'),
 
 
 ]

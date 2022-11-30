@@ -1,5 +1,4 @@
 from django.db import models
-
 class submission(models.Model):
     subject_choices = [
         ('CSC', 'Computer Science'),
@@ -14,6 +13,7 @@ class submission(models.Model):
     ]
     level = models.CharField(max_length=4, choices=level_choices)
     title = models.CharField(max_length=100, default=None)
+    score = models.IntegerField(default=0)
 
 class judge(models.Model):
     first_name = models.CharField(max_length=100)
@@ -36,8 +36,3 @@ class judge(models.Model):
 class session(models.Model):
     id = models.CharField(max_length=8, primary_key=True)
     winner = models.OneToOneField(submission, default=None, on_delete=models.CASCADE, null=True, blank=True)
-
-class scores(models.Model):
-    submission = models.ManyToManyField(submission)
-    judge = models.ManyToManyField(judge)
-    score = models.IntegerField()

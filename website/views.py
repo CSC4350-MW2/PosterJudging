@@ -6,6 +6,7 @@ from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils.crypto import get_random_string
+from django.db.models import F
 
 def index(request):
     if request.method == 'GET':
@@ -44,8 +45,11 @@ def judging_page(request):
             context = {'submissions': submissions}
             return render(request, 'website/judging_page.html', context)
         elif request.method == 'POST':
-            
-
+            for x in range(1,7):
+                if request.POST.get('id_'+str(x), '') != '':  
+                    sub = submission.objects.get(id=x)
+                    sub.score = F('score') + int(request.POST['score_'+str(x)])
+            return redirect('/finish')
 @login_required(login_url="/login")
 def admin_index(request):
     if request.method == 'GET':
@@ -173,7 +177,14 @@ def candidates(request):
 @login_required(login_url="/login")
 def results(request):
     if request.method == 'GET':
-        return render(request, 'website/results.html')
+        submissions = submission.objects.all()
+        top_sub = submissions[0]
+        for sub in submissions:
+            if sub.score > top_sub.score:
+                top_sub = sub
+                
+        context = {"id":top_sub.id, "title":top_sub.title, "score":top_sub.score}
+        return render(request, 'website/results.html', context)
 
 @login_required(login_url="/login")
 def sessions(request):
@@ -182,12 +193,9 @@ def sessions(request):
     elif request.method == 'POST':
         judge_list = judge.objects.all()
         submission_list = submission.objects.all()
-        submission_to_judges = int(max((len(submission_list)/len(judge_list)) + 1, 3))
-        i = 0
-        for judger in judge_list:
-            for x in range(submission_to_judges):
-                judger.submissions.add(submission_list[i+x])
-            i += submission_to_judges-1
+        submission_to_judges = len(submission_list)/len(judge_list)
+        for x in range(len(submission_list)):
+            judge_list[int(x/submission_to_judges)].submissions.add(submission_list[x])
         post = session()
         post.id = get_random_string(8)
         session_id = post.id
@@ -199,3 +207,7 @@ def new_session(request, session_id):
     if request.method == 'GET':
         context = {'session_id': session_id}
         return render(request, 'website/new_session.html', context)
+
+def finish(request):
+    if request.method == 'GET':
+        return render(request, 'website/finish.html')
